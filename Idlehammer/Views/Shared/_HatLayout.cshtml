@@ -9,19 +9,19 @@ Layout = "~/Views/Shared/_Layout.cshtml";
 <div>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light d-flex justify-content-around">
-            <ul class="navbar-nav">
+            <ul class="nav">
                 <a class="navbar-brand" asp-action="Index" asp-controller="Home">Idlehammer</a>
-                <li class="nav-item">
+                <li>
                     <a class="nav-link active" aria-current="page" asp-action="Leaderboard"
                         asp-controller="User">Лидерборд</a>
                 </li>
-                <li class="nav-item">
+                <li>
                     <a class="nav-link active" aria-current="page" asp-action="Settings"
                         asp-controller="User">Настройки</a>
                 </li>
             </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item">
+            <ul class="nav">
+                <li>
                     <form asp-action="Logout" asp-controller="Auth">
                         <input type="submit" class="btn btn-secondary" value="Выйти из аккаунта" />
                     </form>
@@ -29,7 +29,7 @@ Layout = "~/Views/Shared/_Layout.cshtml";
             </ul>
         </nav>
     </header>
-    @RenderBody();
+    @RenderBody()
 </div>
 
 @section scripts {
