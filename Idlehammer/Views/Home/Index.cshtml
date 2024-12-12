@@ -1,0 +1,60 @@
+﻿@model IndexViewModel
+
+@{
+    Layout = "~/Views/Shared/_HatLayout.cshtml";
+}
+
+@section styles {
+    <link href="~/css/index.css" rel="stylesheet">
+}
+
+<div class="row">
+    <div class="click-area">
+        <div class="d-flex flex-column align-items-center">
+            <!-- <h3>@Model.User.UserName</h3> -->
+            <h4>Вера: <span id="current_score">@Model.User.CurrentScore</span></h4>
+            <h4 hidden>Всего ты добыл <span id="record_score">@Model.User.RecordScore</span> кусков руды</h4>
+            <h4 hidden>С одного удара киркой ты добываешь <span id="profit_per_click">@Model.User.ProfitPerClick</span> кусков</h4>
+            <h4>Вера в секунду: <span id="profit_per_second">@Model.User.ProfitPerSecond</span></h4>
+        </div>
+
+        <div class="d-flex justify-content-center">
+             <button id="clickitem" class="click-item bg-transparent border-0">
+                 <img class="w-50" src="~/tyranids.png" />
+             </button>
+        </div>
+    </div>
+
+    <div class="col boosts">
+        <div class="d-flex justify-content-center">
+            @foreach (var boost in Model.Boosts)
+            {
+                var userBoost = Model.User.UserBoosts.FirstOrDefault(ub => ub.BoostId == boost.Id);
+
+                var price = userBoost?.CurrentPrice ?? boost.Price;
+                var quantity = userBoost?.Quantity ?? 0;
+
+                <button class="boost-button border-0 bg-secondary m-3">
+                    <span class="boost-id" hidden>@boost.Id</span>
+                    <h4>@boost.Title</h4>
+                    <img src="data:image/png;base64, @Convert.ToBase64String(boost.Image)" height="100" />
+                    <h5 class="boost-price-string">Цена: <span class="boost-price">@price</span></h5>
+                    <h5>
+                        Доход: @boost.Profit
+                        @if (boost.IsAuto)
+                        {
+                            <span> в секунду</span>
+                        }
+                    </h5>
+                    <h5>
+                        Количество: <span class="boost-quantity">@quantity</span>
+                    </h5>
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/js/index.js"></script>
+}
