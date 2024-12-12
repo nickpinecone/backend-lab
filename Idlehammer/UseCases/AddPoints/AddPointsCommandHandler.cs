@@ -20,10 +20,9 @@ public class AddPointsCommandHandler : IRequestHandler<AddPointsCommand, ScoreDt
     public async Task<ScoreDto> Handle(AddPointsCommand request, CancellationToken cancellationToken)
     {
         var userId = currentUserAccessor.GetCurrentUserId();
-        var user = await appDbContext.ApplicationUsers
-            .Include(user => user.UserBoosts)
-            .ThenInclude(ub => ub.Boost)
-            .FirstAsync(user => user.Id == userId);
+        var user = await appDbContext.ApplicationUsers.Include(user => user.UserBoosts)
+                       .ThenInclude(ub => ub.Boost)
+                       .FirstAsync(user => user.Id == userId);
 
         var profitPerSecond = user.UserBoosts.GetProfit(shouldCalculateAutoBoosts: true);
         var profitPerClick = user.UserBoosts.GetProfit();

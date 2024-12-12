@@ -15,4 +15,6 @@ public class UserBoost
     public long CurrentPrice { get; set; }
 
     public int Quantity { get; set; }
+
+    public int CurrentCharge { get; set; }
 }

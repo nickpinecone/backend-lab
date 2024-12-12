@@ -21,12 +21,10 @@ public class BuyBoostCommandHandler : IRequestHandler<BuyBoostCommand, ScoreBoos
     public async Task<ScoreBoostDto> Handle(BuyBoostCommand request, CancellationToken cancellationToken)
     {
         var userId = currentUserAccessor.GetCurrentUserId();
-        var user = await appDbContext.ApplicationUsers
-            .Include(user => user.UserBoosts)
-            .ThenInclude(ub => ub.Boost)
-            .FirstAsync(user => user.Id == userId, cancellationToken);
-        var boost = await appDbContext.Boosts
-            .FirstAsync(b => b.Id == request.BoostId, cancellationToken);
+        var user = await appDbContext.ApplicationUsers.Include(user => user.UserBoosts)
+                       .ThenInclude(ub => ub.Boost)
+                       .FirstAsync(user => user.Id == userId, cancellationToken);
+        var boost = await appDbContext.Boosts.FirstAsync(b => b.Id == request.BoostId, cancellationToken);
 
         var existingUserBoost = user.UserBoosts.FirstOrDefault(ub => ub.BoostId == request.BoostId);
 
@@ -36,12 +34,29 @@ public class BuyBoostCommandHandler : IRequestHandler<BuyBoostCommand, ScoreBoos
         if (existingUserBoost != null)
         {
             price = existingUserBoost.CurrentPrice;
+
+            if (price > user.CurrentScore)
+            {
+                throw new InvalidOperationException("Not enough score to buy a boost.");
+            }
+
+            user.CurrentScore -= price;
+
             existingUserBoost.Quantity++;
-            existingUserBoost.CurrentPrice = Convert.ToInt64(existingUserBoost.CurrentPrice * DomainConstants.BoostCostModifier);
+            existingUserBoost.CurrentPrice =
+                Convert.ToInt64(existingUserBoost.CurrentPrice * DomainConstants.BoostCostModifier);
         }
         else
         {
             price = boost.Price;
+
+            if (price > user.CurrentScore)
+            {
+                throw new InvalidOperationException("Not enough score to buy a boost.");
+            }
+
+            user.CurrentScore -= price;
+
             var newUserBoost = new UserBoost()
             {
                 Boost = boost,
@@ -53,13 +68,6 @@ public class BuyBoostCommandHandler : IRequestHandler<BuyBoostCommand, ScoreBoos
             userBoost = newUserBoost;
             await appDbContext.UserBoosts.AddAsync(newUserBoost, cancellationToken);
         }
-
-        if (price > user.CurrentScore)
-        {
-            throw new InvalidOperationException("Not enough score to buy a boost.");
-        }
-
-        user.CurrentScore -= price;
 
         await appDbContext.SaveChangesAsync(cancellationToken);
 

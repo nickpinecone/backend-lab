@@ -13,4 +13,6 @@ public class BoostDto
     public byte[] Image { get; init; }
 
     public bool IsAuto { get; init; }
+
+    public int MaxCharge { get; init; }
 }

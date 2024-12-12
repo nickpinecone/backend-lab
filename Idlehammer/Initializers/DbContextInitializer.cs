@@ -27,21 +27,21 @@ public static class DbContextInitializer
 
     public static void InitializeDbContext(AppDbContext appDbContext)
     {
-        const string Boost1 = "ImperialGuard";
-        const string Boost2 = "SpaceMarine";
-        const string Boost3 = "Terminator";
-        const string Boost4 = "Dreadnought";
-        const string Boost5 = "ImperialKnight";
+        const string Boost1 = "Гвардеец";
+        const string Boost2 = "Космодесантник";
+        const string Boost3 = "Терминатор";
+        const string Boost4 = "Дредноут";
+        const string Boost5 = "Имперский рыцарь";
 
         appDbContext.Database.Migrate();
 
         var existingBoosts = appDbContext.Boosts.ToArray();
 
-        AddBoostIfNotExist(Boost1, price: 100, profit: 1, isAuto: true);
-        AddBoostIfNotExist(Boost2, price: 500, profit: 15, isAuto: true);
-        AddBoostIfNotExist(Boost3, price: 2000, profit: 60, isAuto: true);
-        AddBoostIfNotExist(Boost4, price: 10000, profit: 400, isAuto: true);
-        AddBoostIfNotExist(Boost5, price: 100000, profit: 5000, isAuto: true);
+        AddBoostIfNotExist(Boost1, price: 10, profit: 1, maxCharge: 10, isAuto: true);
+        AddBoostIfNotExist(Boost2, price: 500, profit: 5, maxCharge: 30, isAuto: true);
+        AddBoostIfNotExist(Boost3, price: 2000, profit: 20, maxCharge: 50, isAuto: true);
+        AddBoostIfNotExist(Boost4, price: 10000, profit: 100, maxCharge: 100, isAuto: true);
+        AddBoostIfNotExist(Boost5, price: 100000, profit: 1000, maxCharge: 500, isAuto: true);
 
         AddRandomUsers();
 
@@ -78,7 +78,7 @@ public static class DbContextInitializer
             }
         }
 
-        void AddBoostIfNotExist(string name, long price, long profit, bool isAuto = false)
+        void AddBoostIfNotExist(string name, long price, long profit, int maxCharge, bool isAuto = false)
         {
             if (!existingBoosts.Any(eb => eb.Title == name))
             {
@@ -94,6 +94,7 @@ public static class DbContextInitializer
                     Price = price,
                     Profit = profit,
                     IsAuto = isAuto,
+                    MaxCharge = maxCharge,
                     Image = memoryStream.ToArray(),
                 });
             }

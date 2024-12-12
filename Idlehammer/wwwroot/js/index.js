@@ -11,7 +11,7 @@ let profitPerSecond = Number(profitPerSecondElement.innerText);
 let profitPerClick = Number(profitPerClickElement.innerText);
 
 
-$(document).ready(function () {
+$(document).ready(function() {
     const clickitem = document.getElementById("clickitem");
 
     clickitem.onclick = click;
@@ -23,6 +23,31 @@ $(document).ready(function () {
         const boostButton = boostButtons[i];
 
         boostButton.onclick = () => boostButtonClick(boostButton);
+    }
+
+    const superAttacks = document.getElementsByClassName("super-attack");
+
+    for (let i = 0; i < superAttacks.length; i++) {
+        const superAttack = superAttacks[i];
+
+        superAttack.onclick = () => {
+            let boostCharge = superAttack.parentNode.querySelector(".boost-charge");
+            var id = superAttack.getAttribute("data-id");
+
+            if (id != "") {
+                $.ajax({
+                    url: '/user/boost/super',
+                    method: 'post',
+                    dataType: 'json',
+                    data: { boostId: id },
+                    success: (response) => {
+                        boostCharge.innerText = 0;
+                        updateScoreFromApi(response);
+                    },
+                });
+
+            }
+        }
     }
 
     toggleBoostsAvailability();
@@ -65,6 +90,27 @@ function onBuyBoostSuccess(response, boostButton) {
 
 function addSecond() {
     seconds++;
+
+    $.ajax({
+        url: '/user/boost/charge',
+        method: 'post',
+        dataType: 'json',
+    });
+
+    $.ajax({
+        url: '/user/boosts',
+        method: 'get',
+        dataType: 'json',
+        success: (response) => {
+            const boostButtons = document.getElementsByClassName("boost-button");
+
+            for (let i = 0; i < response.length; i++) {
+                const boostButton = boostButtons[i];
+                const boostChargeElement = boostButton.parentNode.querySelector(".boost-charge");
+                boostChargeElement.innerText = response[i].currentCharge;
+            }
+        },
+    });
 
     if (seconds >= threshold) {
         addPointsToScore();
@@ -151,5 +197,5 @@ function toggleBoostsAvailability() {
         }
 
         boostButton.disabled = false;
-    } 
+    }
 }
