@@ -7,4 +7,6 @@ public record ScoreBoostDto
     public int Quantity { get; init; }
 
     public long Price { get; init; }
+
+    public Guid Id { get; init; }
 }

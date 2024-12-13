@@ -3,4 +3,4 @@ using MediatR;
 
 namespace CSharpClicker.Web.UseCases.AddPoints;
 
-public record AddPointsCommand(int Clicks, int Seconds) : IRequest<ScoreDto>;
+public record AddPointsCommand(int Clicks, int Seconds, int FromAbilities) : IRequest<ScoreDto>;

@@ -1,6 +1,7 @@
-﻿const threshold = 10;
+﻿const threshold = 1;
 let seconds = 0;
 let clicks = 0;
+let fromAbilities = 0;
 const currentScoreElement = document.getElementById("current_score");
 const recordScoreElement = document.getElementById("record_score");
 const profitPerClickElement = document.getElementById("profit_per_click");
@@ -25,27 +26,23 @@ $(document).ready(function() {
         boostButton.onclick = () => boostButtonClick(boostButton);
     }
 
-    const superAttacks = document.getElementsByClassName("super-attack");
+    const abilities = document.getElementsByClassName("ability");
 
-    for (let i = 0; i < superAttacks.length; i++) {
-        const superAttack = superAttacks[i];
+    for (let i = 0; i < abilities.length; i++) {
+        const ability = abilities[i];
 
-        superAttack.onclick = () => {
-            let boostCharge = superAttack.parentNode.querySelector(".boost-charge");
-            var id = superAttack.getAttribute("data-id");
+        ability.onclick = () => {
+            let charge = ability.querySelector(".boost-charge");
+            let maxCharge = ability.querySelector(".max-charge");
+            var id = ability.getAttribute("data-id");
+            var quantity = Number(ability.parentNode.querySelector(".boost-quantity").innerText)
+            var profit = Number(ability.getAttribute("data-profit")) * quantity * 10;
 
-            if (id != "") {
-                $.ajax({
-                    url: '/user/boost/super',
-                    method: 'post',
-                    dataType: 'json',
-                    data: { boostId: id },
-                    success: (response) => {
-                        boostCharge.innerText = 0;
-                        updateScoreFromApi(response);
-                    },
-                });
-
+            if (id != "" && Number(charge.innerText) >= Number(maxCharge.innerText)) {
+                currentScoreElement.innerText = Number(currentScoreElement.innerText) + profit;
+                recordScoreElement.innerText = Number(recordScoreElement.innerText) + profit;
+                fromAbilities += profit;
+                charge.innerText = 0;
             }
         }
     }
@@ -54,9 +51,6 @@ $(document).ready(function() {
 })
 
 function boostButtonClick(boostButton) {
-    if (clicks > 0 || seconds > 0) {
-        addPointsToScore();
-    }
     buyBoost(boostButton);
 }
 
@@ -85,32 +79,27 @@ function onBuyBoostSuccess(response, boostButton) {
     boostPriceElement.innerText = boostPrice;
     boostQuantityElement.innerText = boostQuantity;
 
+    const ability = boostButton.parentNode.querySelector(".ability");
+    ability.setAttribute("data-id", response["id"]);
+
     updateScoreFromApi(score);
 }
 
 function addSecond() {
     seconds++;
 
-    $.ajax({
-        url: '/user/boost/charge',
-        method: 'post',
-        dataType: 'json',
-    });
+    const abilities = document.getElementsByClassName("ability");
 
-    $.ajax({
-        url: '/user/boosts',
-        method: 'get',
-        dataType: 'json',
-        success: (response) => {
-            const boostButtons = document.getElementsByClassName("boost-button");
+    for (let i = 0; i < abilities.length; i++) {
+        const ability = abilities[i];
+        let charge = ability.querySelector(".boost-charge");
+        let maxCharge = ability.querySelector(".max-charge");
+        let id = ability.getAttribute("data-id")
 
-            for (let i = 0; i < response.length; i++) {
-                const boostButton = boostButtons[i];
-                const boostChargeElement = boostButton.parentNode.querySelector(".boost-charge");
-                boostChargeElement.innerText = response[i].currentCharge;
-            }
-        },
-    });
+        if (id != "" && Number(charge.innerText) < Number(maxCharge.innerText)) {
+            charge.innerText = Number(charge.innerText) + 1;
+        }
+    }
 
     if (seconds >= threshold) {
         addPointsToScore();
@@ -170,7 +159,7 @@ function addPointsToScore() {
         url: '/score',
         method: 'post',
         dataType: 'json',
-        data: { clicks: clicks, seconds: seconds },
+        data: { clicks: clicks, seconds: seconds, fromAbilities: fromAbilities },
         success: (response) => onAddPointsSuccess(response),
     });
 }

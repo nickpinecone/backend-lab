@@ -82,6 +82,7 @@ public class BuyBoostCommandHandler : IRequestHandler<BuyBoostCommand, ScoreBoos
             },
             Price = userBoost.CurrentPrice,
             Quantity = userBoost.Quantity,
+            Id = userBoost.Id,
         };
     }
 }

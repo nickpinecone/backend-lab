@@ -13,9 +13,8 @@ Layout = "~/Views/Shared/_HatLayout.cshtml";
         <div class="d-flex flex-column align-items-center">
             <!-- <h3>@Model.User.UserName</h3> -->
             <h4>🕇 Вера: <span id="current_score">@Model.User.CurrentScore</span></h4>
-            <h4 hidden>Всего ты добыл <span id="record_score">@Model.User.RecordScore</span> кусков руды</h4>
-            <h4 hidden>С одного удара киркой ты добываешь <span id="profit_per_click">@Model.User.ProfitPerClick</span>
-                кусков</h4>
+            <h4 hidden><span id="record_score">@Model.User.RecordScore</span></h4>
+            <h4 hidden><span id="profit_per_click">@Model.User.ProfitPerClick</span></h4>
             <h4>🕇 Вера в секунду: <span id="profit_per_second">@Model.User.ProfitPerSecond</span></h4>
         </div>
 
@@ -36,6 +35,7 @@ Layout = "~/Views/Shared/_HatLayout.cshtml";
             var quantity = userBoost?.Quantity ?? 0;
             var currentCharge = userBoost?.CurrentCharge ?? 0;
             var id = userBoost?.Id ?? null;
+            var profit = boost.Profit;
 
             <div class="d-flex flex-column justify-content-center align-items-center">
                 <button class="boost-button border-0 rounded m-3 p-2">
@@ -54,7 +54,7 @@ Layout = "~/Views/Shared/_HatLayout.cshtml";
                         Количество: <span class="boost-quantity">@quantity</span>
                     </h5>
                 </button>
-                <button data-id="@id" class="super-attack rounded border-0 mb-3">Супер аттака (<span class="boost-charge">@currentCharge</span> / @boost.MaxCharge)</button>
+                <button data-id="@id" data-profit="@profit" class="ability rounded border-0 mb-3">Способность (<span class="boost-charge">@currentCharge</span> / <span class="max-charge">@boost.MaxCharge</span>)</button>
             </div>
             }
         </div>

@@ -30,8 +30,8 @@ public class AddPointsCommandHandler : IRequestHandler<AddPointsCommand, ScoreDt
         var autoPoints = profitPerSecond * request.Seconds;
         var clickedPoints = profitPerClick * request.Clicks;
 
-        user.CurrentScore += autoPoints + clickedPoints;
-        user.RecordScore += autoPoints + clickedPoints;
+        user.CurrentScore += autoPoints + clickedPoints + request.FromAbilities;
+        user.RecordScore += autoPoints + clickedPoints + request.FromAbilities;
 
         await appDbContext.SaveChangesAsync();
 
