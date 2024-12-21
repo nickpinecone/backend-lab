@@ -167,6 +167,7 @@ function addPointsToScore() {
 function onAddPointsSuccess(response) {
     seconds = 0;
     clicks = 0;
+    fromAbilities = 0;
 
     updateScoreFromApi(response);
 }

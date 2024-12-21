@@ -53,4 +53,16 @@ public class UserController : Controller
 
         return View(userSettings);
     }
+
+    [HttpPost("name")]
+    public async Task<IActionResult> ChangeName(string name, CancellationToken cancellationToken)
+    {
+        var userId = currentUserAccessor.GetCurrentUserId();
+        var user = await appDbContext.ApplicationUsers.FirstAsync(user => user.Id == userId, cancellationToken);
+
+        user.UserName = name;
+
+        await appDbContext.SaveChangesAsync(cancellationToken);
+        return RedirectToAction("Settings", "User");
+    }
 }
