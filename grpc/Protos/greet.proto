@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "GrpcExample";
+
+package example;
+
+service Example {
+  rpc ExampleMethod (ExampleRequest) returns (ExampleReply);
+}
+
+message ExampleRequest {
+  string name = 1;
+}
+
+message ExampleReply {
+  string message = 1;
+}
