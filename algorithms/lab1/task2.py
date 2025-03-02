@@ -1,3 +1,10 @@
+"""
+Лабораторная работа № 1
+Задача 2 Ловкость рук
+2
+"""
+
+
 def solve(hand_count: int, keyboard: list[int]) -> int:
     num_dict = dict[int, int]()
     result = 0

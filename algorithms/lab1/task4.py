@@ -1,8 +1,8 @@
-def min(a: int, b: int) -> int:
-    if (a < b):
-        return a
-    else:
-        return b
+"""
+Лабораторная работа № 1
+Задача 4 Два массива
+3
+"""
 
 
 def solve(arr1: list[int], arr2: list[int]) -> int:

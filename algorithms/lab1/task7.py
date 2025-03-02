@@ -1,15 +1,10 @@
-from functools import reduce
+"""
+Лабораторная работа № 1
+Задача 7 Две кучи
+5
+"""
 
-
-def sum(arr: list[int]):
-    return reduce(lambda acc, val: acc + val, arr, 0)
-
-
-def max(a: int, b: int) -> int:
-    if (a > b):
-        return a
-    else:
-        return b
+from shared.mymath import sum, max
 
 
 def calc(stones: list[int], i: int, sum: int, half_sum: float) -> int:

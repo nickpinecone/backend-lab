@@ -1,8 +1,10 @@
-def min(a: int, b: int) -> int:
-    if (a < b):
-        return a
-    else:
-        return b
+"""
+Лабораторная работа № 1
+Задача 1 Ближайший ноль
+1
+"""
+
+from shared.mymath import min
 
 
 def solve(distances: list[int]) -> list[int]:

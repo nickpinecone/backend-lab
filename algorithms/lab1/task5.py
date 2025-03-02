@@ -1,15 +1,10 @@
-def max(a: int, b: int) -> int:
-    if (a > b):
-        return a
-    else:
-        return b
+"""
+Лабораторная работа № 1
+Задача 5 Длинное сложение и вычитание
+4
+"""
 
-
-def abs(a: int) -> int:
-    if (a < 0):
-        a *= -1
-
-    return a
+from shared.mymath import max
 
 
 def normalize(a: str, b: str) -> tuple[str, str]:
