@@ -4,7 +4,7 @@
 5
 """
 
-from shared.mymath import sum, max
+# from shared.mymath import sum, max
 
 
 def calc(stones: list[int], i: int, sum: int, half_sum: float) -> int:
@@ -13,7 +13,7 @@ def calc(stones: list[int], i: int, sum: int, half_sum: float) -> int:
 
     result_with = 0
 
-    if (sum + stones[i] < half_sum):
+    if (sum + stones[i] <= half_sum):
         result_with = calc(stones, i+1, sum + stones[i], half_sum)
 
     result_without = calc(stones, i+1, sum, half_sum)
@@ -28,3 +28,6 @@ def solve(stones: list[int]) -> int:
     result = stones_sum - (calc(stones, 0, 0, half_sum) * 2)
 
     return result
+
+
+print(solve([6, 7, 9, 13, 18, 24, 31, 50]))

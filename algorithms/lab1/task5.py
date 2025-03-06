@@ -26,7 +26,7 @@ def denormalize(a: str) -> str:
         if (a[i] == '0'):
             result = result.replace('0', '', 1)
 
-    return result
+    return "0" if result == "" else result
 
 
 def sum(a: str, b: str) -> str:
