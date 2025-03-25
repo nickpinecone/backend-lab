@@ -1,5 +1,3 @@
-# type: ignore
-
 """
 Лабораторная работа № 3
 Задача № 10 Вложенные отрезки
@@ -79,17 +77,17 @@ def solve(segments, points):
     for segment in segments:
         last = stack.fetch()
 
-        if segment.end <= last.segment.end:
+        if segment.end <= last.segment.end: # type: ignore
             tree = Tree(segment, last)
-            last.add(tree)
+            last.add(tree) # type: ignore
             stack.push(tree)
         else:
-            while segment.end > last.segment.end:
+            while segment.end > last.segment.end: # type: ignore
                 stack.pop()
                 last = stack.fetch()
 
             tree = Tree(segment, last)
-            last.add(tree)
+            last.add(tree) # type: ignore
             stack.push(tree)
 
     output = []
