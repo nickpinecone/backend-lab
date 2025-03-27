@@ -73,22 +73,105 @@ def solve(commands: list[str]):
             value = int(split[1])
             queue.push(value)
         elif command.startswith("-"):
-            queue.pop()
+            output.append(str(queue.pop()))
         elif command.startswith("?"):
-            output.append(queue.fetch_min())
+            output.append(str(queue.fetch_min()))
 
     return output
 
 
 def run_tests():
     test_cases = [
-        {"commands": ["+ 1", "+ 3", "?", "+ 2", "?", "-", "?"], "expected": [1, 1, 2]},
+        {"command": ["+ 5", "?", "-"], "expected": ["5", "5"]},
+        {
+            "command": ["+ 3", "+ 7", "?", "-", "?", "-"],
+            "expected": ["3", "3", "7", "7"],
+        },
+        {
+            "command": ["+ 10", "+ 5", "+ 8", "?", "-", "?", "-", "?", "-"],
+            "expected": ["5", "10", "5", "5", "8", "8"],
+        },
+        {
+            "command": ["+ 1", "+ 2", "+ 3", "?", "-", "?", "-", "?", "-"],
+            "expected": ["1", "1", "2", "2", "3", "3"],
+        },
+        {
+            "command": ["+ 4", "+ 4", "+ 4", "?", "-", "?", "-", "?", "-"],
+            "expected": ["4", "4", "4", "4", "4", "4"],
+        },
+        {
+            "command": ["+ 10", "+ 1", "?", "-", "?", "-"],
+            "expected": ["1", "10", "1", "1"],
+        },
+        {
+            "command": [
+                "+ 5",
+                "+ 3",
+                "+ 7",
+                "+ 2",
+                "?",
+                "-",
+                "?",
+                "-",
+                "?",
+                "-",
+                "?",
+                "-",
+            ],
+            "expected": ["2", "5", "2", "3", "2", "7", "2", "2"],
+        },
+        {
+            "command": ["+ 100", "+ 200", "+ 50", "?", "-", "?", "-", "?", "-"],
+            "expected": ["50", "100", "50", "200", "50", "50"],
+        },
+        {
+            "command": ["+ 1", "?", "-", "+ 2", "?", "-", "+ 3", "?", "-"],
+            "expected": ["1", "1", "2", "2", "3", "3"],
+        },
+        {
+            "command": [
+                "+ 10",
+                "+ 20",
+                "+ 5",
+                "+ 1",
+                "?",
+                "-",
+                "?",
+                "-",
+                "?",
+                "-",
+                "?",
+                "-",
+            ],
+            "expected": ["1", "10", "1", "20", "1", "5", "1", "1"],
+        },
+        {
+            "command": ["+ 5", "+ 5", "+ 5", "?", "-", "?", "-", "?", "-"],
+            "expected": ["5", "5", "5", "5", "5", "5"],
+        },
+        {
+            "command": [
+                "+ 10",
+                "+ 5",
+                "+ 8",
+                "+ 3",
+                "?",
+                "-",
+                "?",
+                "-",
+                "?",
+                "-",
+                "?",
+                "-",
+            ],
+            "expected": ["3", "10", "3", "5", "3", "8", "3", "3"],
+        },
     ]
 
     all_tests_passed = True
 
     for i, test_case in enumerate(test_cases, start=1):
-        input_data = test_case["commands"]
+        input_data = test_case["command"]
         expected_output = test_case["expected"]
 
         actual_output = solve(input_data)

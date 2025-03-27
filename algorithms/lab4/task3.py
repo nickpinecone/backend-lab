@@ -122,9 +122,9 @@ def solve(sets: list[list[int]]):
 
 def run_tests():
     test_cases = [
-        {"input": [[9, 7, 1, 8], [5, 7, 6, 3], [5, 9, 8, 6]], "expected": 2},
+        {"sets": [[9, 7, 1, 8], [5, 7, 6, 3], [5, 9, 8, 6]], "expected": 2},
         {
-            "input": [
+            "sets": [
                 [-2, 6, 8, 4, -1],
                 [5, 3, 10, -5, -1],
                 [7, 8, -5, -1, -2],
@@ -132,12 +132,52 @@ def run_tests():
             ],
             "expected": 3,
         },
+        {"sets": [[1, 2, 3], [2, 3, 4], [3, 4, 5]], "expected": 2},
+        {"sets": [[10, 20, 30, 40], [20, 30, 40, 50], [30, 40, 50, 60]], "expected": 3},
+        {"sets": [[1, 2, 3, 4, 5], [6, 7, 8, 9, 10], [1, 3, 5, 7, 9]], "expected": 3},
+        {
+            "sets": [[-100, -200, -300], [-200, -300, -400], [-300, -400, -500]],
+            "expected": 2,
+        },
+        {
+            "sets": [
+                [1, 2, 3, 4, 5],
+                [2, 3, 4, 5, 6],
+                [3, 4, 5, 6, 7],
+                [4, 5, 6, 7, 8],
+            ],
+            "expected": 4,
+        },
+        {"sets": [[1], [1, 2], [1, 2, 3]], "expected": 2},
+        {"sets": [[1, 2, 3, 4, 5], [1, 2, 3, 4, 5], [1, 2, 3, 4, 5]], "expected": 5},
+        {
+            "sets": [
+                [1000000000, -1000000000, 0],
+                [0, 1000000000, -1000000000],
+                [1000000000, 0, -1000000000],
+            ],
+            "expected": 3,
+        },
+        {
+            "sets": [
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+            ],
+            "expected": 0,
+        },
+        {
+            "sets": [
+                [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                [5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+            ],
+            "expected": 6,
+        },
     ]
 
     all_tests_passed = True
 
     for i, test_case in enumerate(test_cases, start=1):
-        input_data = test_case["input"]
+        input_data = test_case["sets"]
         expected_output = test_case["expected"]
 
         actual_output = solve(input_data)

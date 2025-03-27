@@ -67,7 +67,7 @@ class Tree:
 
 
 def solve(segments, points):
-    segments = [Segment(int(x.split()[0]), int(x.split()[1]), i+1) for i, x in enumerate(segments)]
+    segments = [Segment(x[0], x[1], i + 1) for i, x in enumerate(segments)]
 
     stack = Stack()
     line = Tree(Segment(-math.inf, math.inf, -1), None)
@@ -77,17 +77,17 @@ def solve(segments, points):
     for segment in segments:
         last = stack.fetch()
 
-        if segment.end <= last.segment.end: # type: ignore
+        if segment.end <= last.segment.end:  # type: ignore
             tree = Tree(segment, last)
-            last.add(tree) # type: ignore
+            last.add(tree)  # type: ignore
             stack.push(tree)
         else:
-            while segment.end > last.segment.end: # type: ignore
+            while segment.end > last.segment.end:  # type: ignore
                 stack.pop()
                 last = stack.fetch()
 
             tree = Tree(segment, last)
-            last.add(tree) # type: ignore
+            last.add(tree)  # type: ignore
             stack.push(tree)
 
     output = []
@@ -112,21 +112,50 @@ def solve(segments, points):
 def run_tests():
     test_cases = [
         {
-            "segments": ["2 10", "2 3", "5 7"],
-            "points": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-            "expected": [
-                -1,
-                2,
-                2,
-                1,
-                3,
-                3,
-                3,
-                1,
-                1,
-                1,
-                -1,
-            ],
+            "segments": [[2, 10], [2, 3], [5, 7]],
+            "queries": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+            "expected": [-1, 2, 2, 1, 3, 3, 3, 1, 1, 1, -1],
+        },
+        {
+            "segments": [[1, 5], [2, 4], [6, 10]],
+            "queries": [3, 7, 11],
+            "expected": [2, 3, -1],
+        },
+        {
+            "segments": [[1, 10], [2, 8], [3, 6], [4, 5]],
+            "queries": [1, 4, 9, 15],
+            "expected": [1, 4, 1, -1],
+        },
+        {
+            "segments": [[1, 20], [5, 15], [10, 12]],
+            "queries": [1, 5, 10, 12, 20],
+            "expected": [1, 2, 3, 3, 1],
+        },
+        {
+            "segments": [[1, 100], [10, 90], [20, 80], [30, 70]],
+            "queries": [15, 25, 35, 95],
+            "expected": [2, 3, 4, 1],
+        },
+        {
+            "segments": [[1, 5], [6, 10], [11, 15]],
+            "queries": [5, 6, 10, 11, 15],
+            "expected": [1, 2, 2, 3, 3],
+        },
+        {"segments": [[1, 5]], "queries": [3, 6], "expected": [1, -1]},
+        {
+            "segments": [[1, 10], [2, 9], [3, 8], [4, 7]],
+            "queries": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            "expected": [1, 2, 3, 4, 4, 4, 4, 3, 2, 1],
+        },
+        {
+            "segments": [[1, 10], [11, 20], [21, 30]],
+            "queries": [10, 15, 20, 25, 30],
+            "expected": [1, 2, 2, 3, 3],
+        },
+        {
+            "segments": [[1, 1000000000]],
+            "queries": [1, 500000000, 1000000000],
+            "expected": [1, 1, 1],
         },
     ]
 
@@ -134,7 +163,7 @@ def run_tests():
 
     for i, test_case in enumerate(test_cases, start=1):
         input_data = test_case["segments"]
-        points = test_case["points"]
+        points = test_case["queries"]
         expected_output = test_case["expected"]
 
         actual_output = solve(input_data, points)

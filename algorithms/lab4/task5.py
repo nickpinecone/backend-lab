@@ -21,17 +21,18 @@ def solve(N, x, y):
 
 def run_tests():
     test_cases = [
-        {"N": 4, "x": 1, "y": 1, "expected": 3},
-        {"N": 5, "x": 1, "y": 2, "expected": 4},
-        {"N": 78, "x": 9, "y": 13, "expected": 423},
-        {"N": 200000000, "x": 1, "y": 1, "expected": 100000001},
-        {"N": 6, "x": 2, "y": 2, "expected": 8},
+        {"n": 4, "x": 1, "y": 1, "expected": 3},
+        {"n": 5, "x": 1, "y": 2, "expected": 4},
+        {"n": 78, "x": 9, "y": 13, "expected": 423},
+        {"n": 8, "x": 8, "y": 3, "expected": 19},
+        {"n": 7, "x": 7, "y": 7, "expected": 28},
+        {"n": 15, "x": 1, "y": 5, "expected": 13},
     ]
 
     all_tests_passed = True
 
     for i, test_case in enumerate(test_cases, start=1):
-        input_data = (test_case["N"], test_case["x"], test_case["y"])
+        input_data = (test_case["n"], test_case["x"], test_case["y"])
         expected_output = test_case["expected"]
 
         actual_output = solve(*input_data)

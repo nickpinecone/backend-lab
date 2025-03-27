@@ -80,14 +80,20 @@ def solve(capitals):
 
 def run_tests():
     test_cases = [
-        {"input": [1, 2, 3, 4, 5], "expected": "0.33"},
-        {"input": [2, 10, 100, 30, 7, 4, 15, 2, 15, 80], "expected": "6.52"},
+        {"capitals": [1, 2, 3, 4, 5], "expected": "0.33"},
+        {"capitals": [2, 10, 100, 30, 7, 4, 15, 2, 15, 80], "expected": "6.52"},
+        {"capitals": [22, 83, 36, 6, 75, 52, 83, 87, 100, 38], "expected": "18.28"},
+        {
+            "capitals": [22, 30, 79, 18, 57, 9, 22, 78, 71, 22, 69, 72, 69, 16, 1],
+            "expected": "22.78",
+        },
+        {"capitals": [85, 9, 24, 17, 95, 41, 43, 76], "expected": "10.66"},
     ]
 
     all_tests_passed = True
 
     for i, test_case in enumerate(test_cases, start=1):
-        input_data = test_case["input"]
+        input_data = test_case["capitals"]
         expected_output = test_case["expected"]
 
         actual_output = str(solve(input_data))

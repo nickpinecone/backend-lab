@@ -45,38 +45,82 @@ def solve(text):
         else:
             i += 1
 
-    return (star_comments, curly_comments, inline_comments, literal_strings)
+    return {
+        "first": star_comments,
+        "second": curly_comments,
+        "third": inline_comments,
+        "fourth": literal_strings,
+    }
 
 
 def run_tests():
     test_cases = [
         {
-            "input": """
-program test;
-(*just for testing *)
-var
-(* variables
-note that
-// here is not comment
-and (* here is
-not a begin of
-another comment
-*)
-x: integer; (* *)
-begin
-write('(*is not comment//');
-write(' and (*here*) '
-,x // y);
-End. // It is comment
-""",
-            "expected": (3, 0, 2, 2),
+            "code": "program test; (* just for testing *) begin end.",
+            "expected": {"first": 1, "second": 0, "third": 0, "fourth": 0},
+        },
+        {
+            "code": "program test; { just for testing } begin end.",
+            "expected": {"first": 0, "second": 1, "third": 0, "fourth": 0},
+        },
+        {
+            "code": "program test; // just for testing\nbegin end.",
+            "expected": {"first": 0, "second": 0, "third": 1, "fourth": 0},
+        },
+        {
+            "code": "program test; writeln('Hello, World!'); begin end.",
+            "expected": {"first": 0, "second": 0, "third": 0, "fourth": 1},
+        },
+        {
+            "code": "program test;\n(* comment 1 *)\n{ comment 2 }\n// comment 3\nwriteln('text'); begin end.",
+            "expected": {"first": 1, "second": 1, "third": 1, "fourth": 1},
+        },
+        {
+            "code": "program test;\n(* comment (* nested *) still comment *)\nbegin end.",
+            "expected": {"first": 1, "second": 0, "third": 0, "fourth": 0},
+        },
+        {
+            "code": "program test;\nwrite('(* is not comment // ');\nwrite(' and (*here*) ', x // y);\n) end. // It is comment",
+            "expected": {"first": 0, "second": 0, "third": 2, "fourth": 2},
+        },
+        {
+            "code": "program test;\n(* comment 1 *)\n(* comment 2 *)\nbegin end.",
+            "expected": {"first": 2, "second": 0, "third": 0, "fourth": 0},
+        },
+        {
+            "code": "program test;\n{ comment 1 }\n{ comment 2 }\nbegin end.",
+            "expected": {"first": 0, "second": 2, "third": 0, "fourth": 0},
+        },
+        {
+            "code": "program test;\n// comment 1\n// comment 2\nbegin end.",
+            "expected": {"first": 0, "second": 0, "third": 2, "fourth": 0},
+        },
+        {
+            "code": "program test;\nwriteln('text 1');\nwriteln('text 2');\nbegin end.",
+            "expected": {"first": 0, "second": 0, "third": 0, "fourth": 2},
+        },
+        {
+            "code": "program test;\n(* comment *)\n{ another comment }\n// yet another comment\nwriteln('comments are tricky');\nbegin end.",
+            "expected": {"first": 1, "second": 1, "third": 1, "fourth": 1},
+        },
+        {
+            "code": "program test;\n(* comment *)\nwrite('(* is not comment *)');\n// comment after string\nbegin end.",
+            "expected": {"first": 1, "second": 0, "third": 1, "fourth": 1},
+        },
+        {
+            "code": "program test;\n(* comment (* nested *) *)\nwrite('(* still not comment *)');\nbegin end.",
+            "expected": {"first": 1, "second": 0, "third": 0, "fourth": 1},
+        },
+        {
+            "code": "program test;\n{ comment { nested } }\nwrite('{ not a comment }');\nbegin end.",
+            "expected": {"first": 0, "second": 1, "third": 0, "fourth": 1},
         },
     ]
 
     all_tests_passed = True
 
     for i, test_case in enumerate(test_cases, start=1):
-        input_data = test_case["input"]
+        input_data = test_case["code"]
         expected_output = test_case["expected"]
 
         actual_output = solve(input_data)

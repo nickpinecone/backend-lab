@@ -59,15 +59,38 @@ def solve(words):
 def run_tests():
     test_cases = [
         {
-            "words": ["BCB", "ABA", "BCB", "BAA", "BBC", "CCB", "CBC", "CBC"],
+            "data": ["BCB", "ABA", "BCB", "BAA", "BBC", "CCB", "CBC", "CBC"],
             "expected": 3,
+        },
+        {"data": ["LOOP", "POOL", "POLO"], "expected": 1},
+        {"data": ["ABC", "CAB", "BAC", "XYZ", "ZYX"], "expected": 2},
+        {"data": ["AAAA", "AAAA", "AAAA"], "expected": 1},
+        {"data": ["LOOP", "POOL", "POLO", "XYZZ", "ZZYX", "ABCD"], "expected": 3},
+        {"data": ["CAT", "DOG", "ACT", "GOD", "TAC", "ODG"], "expected": 2},
+        {"data": ["AAAAA", "BBBBB", "CCCCC"], "expected": 3},
+        {"data": ["ABCDE", "EDCBA", "BCDEA", "FGHIJ", "JIHGF"], "expected": 2},
+        {"data": ["A", "A", "A", "B", "B", "C"], "expected": 3},
+        {"data": ["LOOP", "POOL", "POLO", "LOOP", "POOL", "POLO"], "expected": 1},
+        {
+            "data": [
+                "LOOP",
+                "POOL",
+                "POLO",
+                "XYZZ",
+                "ZZYX",
+                "ABCD",
+                "DCBA",
+                "AAAA",
+                "AAAA",
+            ],
+            "expected": 4,
         },
     ]
 
     all_tests_passed = True
 
     for i, test_case in enumerate(test_cases, start=1):
-        input_data = test_case["words"]
+        input_data = test_case["data"]
         expected_output = test_case["expected"]
 
         actual_output = solve(input_data)
